@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
 
-<head>
-    <meta name="veiwport" content="initial-scale=1 ,width=device-width" >
-    <title>hello</title>
-</head>
-<body>
-    <form action="/greet" method="get">
-        <input name="name" placeholder="name" autocomplete="off" autofocus type="text">
-        <button type="submit">greet</button>
-    </form>
-</body>
-</html>
+{% block body %}
+ <form action="/greet" method="get">
+    <input name="name" placeholder="name" autocomplete="off" autofocus type="text">
+    <button type="submit">greet</button>
+ </form>
+ {% endblock %}
