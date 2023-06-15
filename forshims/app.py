@@ -1,8 +1,15 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
+import sqlite3
+from sqlalchemy.pool import SingletonThreadPool
+
 
 app = Flask(__name__)
+db = sqlite3.connect("sport.db",check_same_thread=False)
 
-REGISTRANTS = {}
+c = db.cursor()              #creating db
+
+#c.execute("""CREATE TABLE registrants(id INTEGER,name TEXT NOT NULL, sport TEXT NOT NULL,PRIMARY KEY (id))""") #create table  
+#REGISTRANTS = {}
 SPORTS = ["soccer","batminton","basketball"]
 
 @app.route("/")
@@ -14,15 +21,17 @@ def register():
   name = request.form.get("name")
   if not  name:
     return render_template("failure.html")
-  sport = request.form.get("sports")
+  sport = request.form.get("sport")
   if sport not in SPORTS:
     return render_template("failure.html")
-  
-  
-  REGISTRANTS[name] = sport                      
-  return render_template("success.html")
+   
+  c.execute(" INSERT INTO registrants(name,sport) VALUES(?,?)", ( name,sport)) 
+  db.commit()
+ # REGISTRANTS[name] = sport                      
+  return redirect ("/registrant.html")
 
 
 @app.route("/registrant")
 def registrant():
-  return render_template("registrant.html", registrants =  REGISTRANTS)
+  registrants= c.execute("SELECT * FROM registrants")
+  return render_template("/registrant.html", registrants = registrants  )
