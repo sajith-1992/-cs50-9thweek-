@@ -28,10 +28,19 @@ def register():
   c.execute(" INSERT INTO registrants(name,sport) VALUES(?,?)", ( name,sport)) 
   db.commit()
  # REGISTRANTS[name] = sport                      
-  return redirect ("/registrant.html")
+  # return  render_template("test.html")
+  # return redirect('/registrant')
 
+  return redirect("/registrant")
 
 @app.route("/registrant")
 def registrant():
-  registrants= c.execute("SELECT * FROM registrants")
-  return render_template("/registrant.html", registrants = registrants  )
+    # return render_template("test.html")
+    # return render_template("registrant.html")
+    c.execute("SELECT *  FROM registrants")
+    registrants=c.fetchall()
+    
+    for row in registrants:
+       print(row)
+
+    return render_template("registrant.html", registrants=registrants)

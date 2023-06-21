@@ -1,31 +1,21 @@
 {% extends "layout.html" %}
+
 {% block body %}
-
- <h1> registrant</h1>
- <table>
+  <h1>Registrants</h1>
+  <table>
     <thead>
-    <tr>
-      <th>Name</th>
-      <th>sport</th>
-     </tr>
-
+      <tr>
+        <th>Name</th>
+        <th>Sport</th>
+      </tr>
     </thead>
     <tbody>
+      {% for registrant in registrants %}
       <tr>
-        {% registrant in registrants %}
-        <td>{{ registrant.name  }}</td>
-        <td>{{ registrant.sport }}</td>
-        {% endfor %}
-        <td>
-          
-        </td>
-
+        <td>{{ registrant[0] }}</td>
+        <td>{{ registrant[1] }}</td>
       </tr>
-
+      {% endfor %}
     </tbody>
- </table>
-
+  </table>
 {% endblock %}
-
-
-
