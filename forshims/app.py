@@ -10,11 +10,22 @@ c = db.cursor()              #creating db
 
 #c.execute("""CREATE TABLE registrants(id INTEGER,name TEXT NOT NULL, sport TEXT NOT NULL,PRIMARY KEY (id))""") #create table  
 #REGISTRANTS = {}
+c.exicute("""ALTER TABLE registrants(
+ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY;) """
+)
 SPORTS = ["soccer","batminton","basketball"]
 
 @app.route("/")
 def index ():
   return render_template("index.html" , sports= SPORTS)
+@app.route("/deregister",methods=["POST"])
+def deregistrant():
+  id= request.form.get("id")
+  print(id)
+  
+  if id:
+     c.execute("DELETE FROM registrants WHERE id=?",id)
+  return redirect("/registrant")
 
 @app.route("/register",methods=["POST"])
 def register():
@@ -40,7 +51,7 @@ def registrant():
     c.execute("SELECT *  FROM registrants")
     registrants=c.fetchall()
     
-    for row in registrants:
-       print(row)
+    # for row in registrants:
+    #    print(row)
 
     return render_template("registrant.html", registrants=registrants)
