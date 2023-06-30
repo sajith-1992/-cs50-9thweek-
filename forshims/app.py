@@ -1,13 +1,18 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session, sessions
+from flask_session import session
 import sqlite3
 from sqlalchemy.pool import SingletonThreadPool
 
 
 app = Flask(__name__)
+
+
 db = sqlite3.connect("sport.db",check_same_thread=False)
 
 c = db.cursor()              #creating db
-
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+sessions(app)
 #c.execute("""CREATE TABLE registrants(id INTEGER,name TEXT NOT NULL, sport TEXT NOT NULL,PRIMARY KEY (id))""") #create table  
 #REGISTRANTS = {}
 c.exicute("""ALTER TABLE registrants(
@@ -17,6 +22,7 @@ SPORTS = ["soccer","batminton","basketball"]
 
 @app.route("/")
 def index ():
+ 
   return render_template("index.html" , sports= SPORTS)
 @app.route("/deregister",methods=["POST"])
 def deregistrant():
